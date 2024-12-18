@@ -25,6 +25,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
 import WheatherApp from './Screens/WheatherApp'
 import Wheasecond from './Screens/Wheasecond'
+import Productdet from './Screens/Productdet'
 
 
 
@@ -50,17 +51,21 @@ import Wheasecond from './Screens/Wheasecond'
 //       headerShown: false
 //     }
 //   });
-// const RootStack = createNativeStackNavigator({
-//   screens: {
-//     Add: ContactAppScreen,
-//     Feed:ContactList,
-//     Contacts:ContactDetails,
-//     },
-//     screenOptions:{
-//       headerShown: false
-//     }
-// });
+const RootStack = createNativeStackNavigator({
+  screens: {
+    Add: ContactAppScreen,
+    Feed:ContactList,
+    Contacts:ContactDetails,
+    },
+    screenOptions:{
+      headerShown: false
+    }
+});
+const Navigation = createStaticNavigation(RootStack,);
+export default function App() {
+ return <Navigation />;
 
+}
 // const MoreTabs = createBottomTabNavigator({
 
 //   Livingroom: {
@@ -133,24 +138,24 @@ import Wheasecond from './Screens/Wheasecond'
 
 
 
-const RootStack = createNativeStackNavigator({
-    screens: {
-      WheatherApp: WheatherApp,
-      Wheasecond:Wheasecond,
+// const RootStack = createNativeStackNavigator({
+//     screens: {
+//       WheatherApp: WheatherApp,
+//       Wheasecond:Wheasecond,
      
-      },
-      screenOptions:{
-        headerShown: false
-      }
-  });
-const Navigation = createStaticNavigation(RootStack,);
+//       },
+//       screenOptions:{
+//         headerShown: false
+//       }
+//   });
+// const Navigation = createStaticNavigation(RootStack,);
 
 
 
-export default function App() {
- return <Navigation />;
+// export default function App() {
+//  return <Navigation />;
 
-}
+// }
 
 
 
@@ -163,6 +168,7 @@ export default function App() {
 //  <View style={{flex: 1}}>
 //   <Wheasecond/>
  {/* <WheatherApp/> */}
+//  <Productdet/>
       {/* <Productd/> */}
       {/* <Ottp/>  */}
       {/* <Search/> */}

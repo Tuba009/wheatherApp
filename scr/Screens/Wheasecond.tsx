@@ -13,9 +13,6 @@ const Wheasecond = ({ route }: any) => {
   const { data, position } = route.params
   console.log('My data', data)
   const [weatherData, setWeatherData] = useState<any>([])
-
-
-
   const [Loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -70,6 +67,53 @@ const Wheasecond = ({ route }: any) => {
     }
   }
 
+
+
+  // const renderItem = ({ item }: any) => {
+  //   console.log("itemdata", item);
+  //   return (
+  //     <View style={{ marginHorizontal: 25, alignItems: 'center' }}>
+  //       <View style={{ marginVertical: 40, justifyContent: 'space-between', paddingVertical: 5, alignItems: 'center' }}>
+  //         <Text style={{ marginVertical: 20, color: 'white' }}>{item.main.temp}°C</Text>
+  //         <Cloud name="cloud-sun" size={20} color="white" />
+  //         <Text style={{ color: 'white', marginVertical: 10 }}>{date.getHours()}:{date.getMinutes()}</Text>
+  //       </View>
+  //     </View>
+  //   );
+  // };
+  
+  // const date = new Date();
+  // const months = [
+  //   "Jan", "Feb", "Mar", "April", "May",
+  //   "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"
+  // ];
+  
+  // console.log("weather ", weatherData.list);
+  
+  // // Use the slice function here
+  // const slicedWeatherData = weatherData?.list?.slice(1, 5); //  get the first 5  items
+  
+  // return (
+  //   <View style={{ flex: 1, backgroundColor: '#47BFDF' }}>
+  //     {Loading ? (
+  //       <Text style={{ color: 'white', textAlign: 'center' }}>Loading...</Text>
+  //     ) : error ? (
+  //       <Text style={{ color: 'red', textAlign: 'center' }}>{error}</Text>
+  //     ) : weatherData.list ? (
+  //       <FlatList
+  //         data={slicedWeatherData} // Use sliced data
+  //         renderItem={renderItem as any}
+  //         horizontal={true}
+  //         keyExtractor={(item, index) => index.toString()}
+  //       />
+  //     ) : (
+  //       <Text style={{ color: 'white', textAlign: 'center' }}>No Weather Data Available</Text>
+  //     )}
+  //     {/* Other components */}
+  //   </View>
+  // );
+  
+
   const renderItem = ({ item }: any) => {
 
     console.log(" itemdata", item)
@@ -92,9 +136,6 @@ const Wheasecond = ({ route }: any) => {
   const navigation = useNavigation<any>();
 
   return (
-       
-    
-    
 
     <View style={{ flex: 1, backgroundColor: '#47BFDF' }}>
 
@@ -132,7 +173,6 @@ const Wheasecond = ({ route }: any) => {
       <FlatList data={weatherData.list}
         renderItem={renderItem as any}
         horizontal={true}
-
       />
       <View>
 

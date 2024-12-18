@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Button } from '@react-navigation/elements';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Icon1 from 'react-native-vector-icons/MaterialIcons'
 export const ContactList = () => {
 
   const [contacts, setContacts] = useState([])
@@ -46,22 +47,26 @@ export const ContactList = () => {
 
           <View style={{ flexDirection: 'row', }}>
             <TouchableOpacity >
-              <Image source={require('./../../../images/icon.jpg')} />
+            { item.selectedImage ?   item.selectedImage  &&
+                           <Image style={{ height: 45, width: 45, borderRadius: 25, }} source={{ uri: item.selectedImage }} />:
+                        <Icon1 name="account-circle" size={52} color="grey" />
+                       }
             </TouchableOpacity>
             <View style={{ flexDirection: 'column' }}>
 
               <Text style={styles.storedtext}>
-                {item.contactName} {item.SurName}
+                  {item.contactName} {item.SurName}
               </Text>
 
               <Text style={styles.storedtext}>
                 {item.contactNumber}
               </Text>
             </View>
-            <TouchableOpacity style={{ position: 'absolute', marginLeft: 280, height: 31, width: 31, marginRight: 10, alignItems: "flex-end" }} >
-              <Icon name="phone" size={20} color="green" />
-              <Icon onPress={() => deleteContact(index)} name="delete" size={20} color="red"
-              />
+            <TouchableOpacity style={{ position: 'absolute', marginLeft: 280, height: 31, width: 31, marginRight: 10, }} >
+              {/* <Icon name="phone" size={20} color="green" /> */}
+              <Icon1 name="call" size={30} color="#4eab45"  />
+              {/* <Icon onPress={() => deleteContact(index)} name="delete" size={20} color="red"
+              /> */}
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -82,7 +87,7 @@ export const ContactList = () => {
     <View>
       <View style={styles.Headercontainer}>
         <TouchableOpacity onPress={() => navigation.goBack()} >
-          <Image style={{marginVertical:5}}
+          <Image style={{marginVertical:5,marginHorizontal:5,}}
             source={require('./../../../images/arrow_back.png')} />
         </TouchableOpacity>
 
@@ -148,11 +153,12 @@ const styles = StyleSheet.create({
   storedtext: {
     color: 'black',
     fontSize: 18,
+    marginHorizontal:5,
     textAlignVertical: 'center'
   },
   ccontactlistname: {
     color: 'black',
-    marginHorizontal: -10,
+    marginHorizontal: 0,
     paddingHorizontal: 20,
     fontSize: 20,
     fontWeight: "bold",

@@ -1,17 +1,42 @@
-import { Alert, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icons from 'react-native-vector-icons/AntDesign'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import {Button} from '@react-navigation/elements';
 import Icon from 'react-native-vector-icons/AntDesign';
- 
+import { launchImageLibrary } from 'react-native-image-picker'
+
 export const ContactAppScreen = () => {
+
+
+    const [selectedImage, setSelectedImage] = useState<any>(null)
+
+    const openImagePicker = () => {
+        const options:any = {
+            mediaType: 'photo',
+            includeBase64: false,
+            maxHeight: 2000,
+            maxWidth: 2000,
+        
+        };
+
+        launchImageLibrary(options, (response: any) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('Image picker error: ', response.error);
+            } else {
+                let imageUri = response.uri || response.assets?.[0]?.uri;
+                setSelectedImage(imageUri);
+            }
+        });
+    };
+
     const [name, setName] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [SurName, setSurName] = useState('')
     const [contacts, setContacts] = useState([])
-    const navigation=useNavigation<any>();
+    const navigation = useNavigation<any>();
     //use to show the asynobjects
     useEffect(() => {
         getStoredObjectValue()
@@ -19,14 +44,15 @@ export const ContactAppScreen = () => {
 
     const saveConatct = () => {
         if (name !== '' && SurName !== '' && phoneNumber !== '') {
-            const contactData = [...contacts,{ contactName:name,SurName:SurName,contactNumber:phoneNumber }]
+            const contactData = [...contacts, { contactName: name, SurName: SurName, contactNumber: phoneNumber, selectedImage }]
             console.log('Contact List', contactData)
             storeObjectValue(contactData)
-            
+
             setContacts(contactData as any)
             setName('')
             setSurName('')
             setPhoneNumber('')
+            setSelectedImage(null)
             navigation.navigate('ContactList' as never)
         } else {
             Alert.alert('Kindly fill all field')
@@ -39,7 +65,7 @@ export const ContactAppScreen = () => {
             const jsonValue = JSON.stringify(contactList)
             console.log('Contact List', contactList)
             await AsyncStorage.setItem('CONTACTS', jsonValue)
-        
+
             console.log('Your value stored')
         } catch (error) {
             console.log('Error', error)
@@ -61,127 +87,135 @@ export const ContactAppScreen = () => {
         try {
             const jsonValue = await AsyncStorage.getItem('CONTACTS')
             const storedContactList = JSON.parse(jsonValue as any)
-            if(storedContactList !== null){
+            if (storedContactList !== null) {
                 setContacts(storedContactList as any)
             }
-            
+
             console.log('Got Stored Value', storedContactList)
         } catch (error) {
             console.log('Error', error)
         }
     }
 
-    const renderContacts = ({ item ,index}: any) => {
-        return (
+    // const renderContacts = ({ item, index }: any) => {
+    //     return (
 
-            <View style={styles.Contact}>
-                <View style={{ flexDirection: 'row', }}>
-                <Image source={require('./../../../images/icon.jpg')} />
-                <View style={{flexDirection:'column'}}>
-                    <Text style={styles.storedtext}>
-                        {item.contactName} {item.SurName}
-                    </Text>
-                    <Text style={styles.storedtext}>
-                    {item.contactNumber}
-                    </Text>
-                   </View>
-                   <TouchableOpacity style={{alignItems:'flex-end',marginLeft:140}} >
-                    <Icon name="phone" size={20} color="green" />
-                    </TouchableOpacity>
-                <TouchableOpacity onPress={()=> deleteContact(index)} style={{alignItems:'flex-end',marginRight:20}}>
-                <Icon name="delete" size={20} color="red" />
-                </TouchableOpacity>
-                   </View>
-            </View>
-        )
-    }
+    //         <View style={styles.Contact}>
+    //             <View style={{ flexDirection: 'row', }}>
+    //                 <Image source={require('./../../../images/icon.jpg')} />
+    //                 <View style={{ flexDirection: 'column' }}>
+    //                     <Text style={styles.storedtext}>
+    //                         {item.contactName} {item.SurName}
+    //                     </Text>
+    //                     <Text style={styles.storedtext}>
+    //                         {item.contactNumber}
+    //                     </Text>
+    //                 </View>
+    //                 <TouchableOpacity style={{ alignItems: 'flex-end', marginLeft: 140 }} >
+    //                     <Icon name="phone" size={20} color="green" />
+    //                 </TouchableOpacity>
+    //                 <TouchableOpacity onPress={() => deleteContact(index)} style={{ alignItems: 'flex-end', marginRight: 20 }}>
+    //                     <Icon name="delete" size={20} color="red" />
+    //                 </TouchableOpacity>
+    //             </View>
+    //         </View>
+    //     )
+    // }
 
-         return (
-            <ScrollView>
+    return (
+        
             <View style={styles.body}>
                 <View style={styles.header}>
-                    <TouchableOpacity  >
-                     <Image 
-                     source={require('./../../../images/arrow_back.png')}/>
+                    <TouchableOpacity onPress={()=>{
+                        navigation.navigate('Feed')
+                    }} >
+                        <Image
+                            source={require('./../../../images/arrow_back.png')} />
                     </TouchableOpacity>
-                   
+
                     <Text style={styles.headertxt}>Add</Text>
-                    <TouchableOpacity style={{marginLeft:200}} 
-                    onPress={() => {
-                        saveConatct();
-                        navigation.navigate('Feed');
-                      }}>
-                    <Image 
-                     source={require('./../../../images/check.png')}/>
+                    <TouchableOpacity style={{ marginLeft: 215 }}
+                        onPress={() => {
+                            saveConatct();
+                            
+                        }}>
+                        <Image
+                            source={require('./../../../images/check.png')} />
                     </TouchableOpacity>
                 </View>
 
-                <View style={{  height: 390 }}>
+                <View >
                     <View style={styles.mainnametop}>
-                    <Text style={styles.title2}> Name </Text>
-                    <TextInput
-                        style={styles.inputs}
-                        value={name}
-                        onChangeText={setName}
-                        placeholder='Enter Name'
-                        placeholderTextColor={'grey'}
+                        <Text style={styles.title2}> Name </Text>
+                        <TextInput
+                            style={styles.inputs}
+                            value={name}
+                            onChangeText={setName}
+                            placeholder='Enter Name'
+                            placeholderTextColor={'grey'}
 
-                     />
+                        />
                     </View>
 
-                   <View style={styles.main}>
-                    <Text style={styles.title2}> SurName</Text>
-                    <TextInput
-                        style={styles.inputs}
-                        value={SurName}
-                        onChangeText={setSurName}
-                        placeholder='SurName'
-                        placeholderTextColor={'grey'}
+                    <View style={styles.main}>
+                        <Text style={styles.title2}> SurName</Text>
+                        <TextInput
+                            style={styles.inputs}
+                            value={SurName}
+                            onChangeText={setSurName}
+                            placeholder='SurName'
+                            placeholderTextColor={'grey'}
 
-                    />
-                  </View>
-
-                  <View style={styles.main}>
-                    <Text style={styles.title2}> Phone Number</Text>
-                    <TextInput
-                        style={styles.inputs}
-                        value={phoneNumber}
-                        onChangeText={setPhoneNumber}
-                        placeholder='+923__-________'
-                        placeholderTextColor={'grey'}
-                        keyboardType='phone-pad'
-                    />
+                        />
                     </View>
 
-             </View>
-             {/* <View style={{ alignItems: 'center' }}>
+                    <View style={styles.main}>
+                        <Text style={styles.title2}> Phone Number</Text>
+                        <TextInput
+                            style={styles.inputs}
+                            value={phoneNumber}
+                            onChangeText={setPhoneNumber}
+                            placeholder='+923__-________'
+                            placeholderTextColor={'grey'}
+                            keyboardType='phone-pad'
+                        />
+                    </View>
+                    <TouchableOpacity
+                        onPress={openImagePicker}>
+                            <Image style={{height:50,width:50,marginHorizontal:30}} source={require('./../../../images/camera.png')}/>
+                        <Text style={styles.savecontact}>Add Image From gallery</Text>
+                        {
+                            selectedImage &&
+                            <Image style={{ height: 100, width: 100,borderRadius:25,marginVertical:50,marginLeft:110 }} source={{ uri: selectedImage }} />
+                        }
+                    </TouchableOpacity>
+                </View>
+                {/* <View style={{ alignItems: 'center' }}>
                 <TouchableOpacity
                  onPress={saveConatct} 
                  style={styles.button} >
                   <Text style={styles.savecontact} >Save</Text>
                 </TouchableOpacity>
                </View> */}
-               <View>
-                
-               </View>
-               {/* <TouchableOpacity>
-            //    <Button onPress={() => navigation.navigate('More' as never)}>Go to More</Button>
-            //    <Button onPress={() => navigation.navigate('More', { screen:  'Contacts' })}>Go to contact list
-            //    </Button>
-            // </TouchableOpacity> */}
-            {/* //     <TouchableOpacity  
+
+                {/* <TouchableOpacity>
+               //    <Button onPress={() => navigation.navigate('More' as never)}>Go to More</Button>
+              //    <Button onPress={() => navigation.navigate('More', { screen:  'Contacts' })}>Go to contact list
+               //    </Button>
+               // </TouchableOpacity> */}
+                {/* //     <TouchableOpacity  
                       onPress={saveConatct} >
                      <Text style={{ textAlign: 'center', color: 'black' }}>Save</Text>
                 </TouchableOpacity> */}
                 {/* <Text style={styles.contactlist}>Contact  List</Text>  */}
 
-                 {/* <FlatList
+                {/* <FlatList
                     data={contacts}
                     renderItem={renderContacts}
                 />  */}
             </View>
-            </ScrollView>
         
+
     )
 }
 export default ContactAppScreen;
@@ -190,7 +224,7 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         backgroundColor: '#fafafa'
-      },
+    },
     header: {
         height: 70,
         alignItems: 'center',
@@ -203,8 +237,8 @@ const styles = StyleSheet.create({
         fontSize: 21,
         fontWeight: '500',
         marginLeft: 30,
-    
-      },
+
+    },
     title: {
         fontSize: 24,
         fontWeight: '600',
@@ -215,7 +249,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginVertical: 10,
         marginTop: 40
-      },
+    },
     Addcontacts: {
         fontSize: 15,
         paddingLeft: 30,
@@ -242,8 +276,11 @@ const styles = StyleSheet.create({
     },
 
     savecontact: {
-       textAlign: 'center',
-         color: 'gray'
+        textAlign: 'center',
+        color: 'black',
+        marginVertical:-35,
+
+
 
     },
     button: {
@@ -254,13 +291,13 @@ const styles = StyleSheet.create({
         width: '40%',
         borderRadius: 10,
         justifyContent: 'center'
-      },
-    
+    },
+
     title2: {
         color: 'black',
         fontSize: 17,
-      },
-      storeddata: {
+    },
+    storeddata: {
         backgroundColor: 'transperant',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -268,19 +305,19 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginTop: 20,
         flex: 0.,
-    
-      },
-      storedtext: {
+
+    },
+    storedtext: {
         color: 'black',
         fontSize: 18,
         textAlignVertical: 'center'
-      },
+    },
 
-      main: {
+    main: {
         marginLeft: 10,
         marginVertical: 10,
-      },
-      
+    },
+
 })
 
 

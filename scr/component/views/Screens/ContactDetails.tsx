@@ -3,14 +3,41 @@ import React, { useCallback, useState } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Button } from '@react-navigation/elements';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Icon1 from 'react-native-vector-icons/MaterialIcons'
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { launchImageLibrary } from 'react-native-image-picker'
 
 
 const ContactDetails = ({ route }: any) => {
+
+  // const [selectedImage, setSelectedImage] = useState<any>(null)
+  
+  //     const openImagePicker = () => {
+  //         const options = {
+  //             mediaType: 'photo',
+  //             includeBase64: false,
+  //             maxHeight: 2000,
+  //             maxWidth: 2000,
+  //         };
+  
+  //         launchImageLibrary(options, (response: any) => {
+  //             if (response.didCancel) {
+  //                 console.log('User cancelled image picker');
+  //             } else if (response.error) {
+  //                 console.log('Image picker error: ', response.error);
+  //             } else {
+  //                 let imageUri = response.uri || response.assets?.[0]?.uri;
+  //                 setSelectedImage(imageUri);
+  //             }
+  //         });
+  //     };
+
+
   const { Save,index } = route.params
   console.log('DATA ====>', Save)
 console.log('index',index)
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   useFocusEffect(
     useCallback(() => {
       getStoredObjectValue()
@@ -53,9 +80,9 @@ console.log('index',index)
         </View>
 
         <View style={styles.image}>
-        <TouchableOpacity style={{marginRight:220}} 
+        <TouchableOpacity style={{marginRight:215,}} 
          onPress={() => navigation.goBack()}>
-                    <Icon name="arrowleft" size={20} color="black" />
+                    <Icon name="arrowleft" size={25} color="black" />
                     </TouchableOpacity>
 
           <TouchableOpacity>
@@ -71,17 +98,31 @@ console.log('index',index)
       <View style={styles.main} />
 
       <View style={styles.contactpiccontainer}>
-        <Image style={styles.Contactpic} source={require('./../../../images/icon.png')} />
+      { Save.selectedImage?   Save.selectedImage  &&
+                           <Image style={{ height: 170, width: 170, borderRadius: 100, }} source={{ uri: Save.selectedImage }} />:
+                        <Icon1 style={{height:160}} name="account-circle" size={170} color="grey" />
+                       }
+        {/* <Image style={styles.Contactpic} source={require('./../../../images/icon.png')} /> */}
       </View>
 
       <View style={styles.Iconcontainer}>
         <TouchableOpacity style={styles.delete}  onPress={() => deleteContact(index)} >
-        <Icon  name="delete" size={20} color="red"
+        <Icon2 style={{height:100,width:100}}  name="delete" size={27} color="black"
         />
         </TouchableOpacity>
 
-        <TouchableOpacity>
-          <Image style={styles.delete} source={require('./../../../images/edit.png')} />
+        <TouchableOpacity onPress={()=>{
+                        navigation.navigate('Add')
+                    }}>
+           {/* <TouchableOpacity
+                                  onPress={openImagePicker}>
+                                 <Image style={{marginVertical:5,marginHorizontal:5}} source={require('./../../../images/edit.png')}/>
+                                  {
+                                      selectedImage &&
+                                      <Image style={{ height: 100, width: 100 }} source={{ uri: selectedImage }} />
+                                  }
+                              </TouchableOpacity> */}
+          <Image style={{marginVertical:5,marginHorizontal:5}} source={require('./../../../images/edit.png')} />
         </TouchableOpacity>
       </View>
 
@@ -102,16 +143,14 @@ console.log('index',index)
 
         <View style={styles.detailicon}>
           <TouchableOpacity>
-            <Image
-              style={styles.callicon}
-              source={require('./../../../images/phoneicon.jpg')}
-            />
+          <View style={{ height: 40, width: 40, backgroundColor: '#08AE2D', borderRadius: 30, alignItems: 'center', justifyContent: 'center' }}>
+                     <Icon1 name="call" size={20} color="white" />
+                  </View>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Image
-              style={styles.callicon}
-              source={require('./../../../images/message.png')}
-            />
+          <View style={{ height: 40, width: 40, backgroundColor: '#E9AD13', borderRadius: 30, alignItems: 'center', justifyContent: 'center' }}>
+                     <Icon1 name="message" size={20} color="white" />
+                  </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -156,7 +195,7 @@ console.log('index',index)
               </View>
             </View>
             <View style={styles.aligner}>
-              <Text style={styles.calledtonumtext}>Rang 5 times</Text>
+              <Text style={styles.calledtonumtext}>Ring 5 times</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -233,7 +272,7 @@ const styles = StyleSheet.create({
   number: {
     fontWeight: 'bold',
     fontSize: 15,
-    paddingHorizontal: 35,
+    paddingHorizontal: 25,
     color: 'black',
     marginTop: 20,
 
@@ -260,7 +299,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '50%',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 20,
+    marginHorizontal:10,
     backgroundColor: 'white'
   },
   Headertextstyle: {
