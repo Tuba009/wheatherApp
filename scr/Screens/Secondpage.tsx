@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 const Secondpage = () => {
     const navigation=useNavigation<any>();
@@ -37,10 +38,12 @@ const Secondpage = () => {
                 </TouchableOpacity>
 
                 <View>
-                <Text style={{color:'black',textAlign:'center'}}>
+                <Text style={{color:'black',textAlign:'center',marginLeft:-30}}>
                 Dont’t have an account?
-                <Text style={{color:'blue'}}>Register</Text>
                 </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Signup' as never)}>
+                <Text style={{color:'blue',marginLeft:255,marginTop:-22}}>Register</Text>
+                </TouchableOpacity>
                 </View>
                 
             </View>

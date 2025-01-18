@@ -1,4 +1,4 @@
-import { Alert, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState, useCallback, } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -84,6 +84,7 @@ export const ContactList = () => {
   }
 
   return (
+    <ScrollView>
     <View>
       <View style={styles.Headercontainer}>
         <TouchableOpacity onPress={() => navigation.goBack()} >
@@ -92,6 +93,13 @@ export const ContactList = () => {
         </TouchableOpacity>
 
         <Text style={styles.ccontactlistname}>Contacts</Text>
+           <TouchableOpacity>
+                    <Image style={{marginLeft:120}} source={require('./../../../images/search2.png')} />
+                  </TouchableOpacity>
+        
+                  <TouchableOpacity>
+                    <Image style={{marginLeft:20}} source={require('./../../../images/threedots.png')} />
+                  </TouchableOpacity>
 
         {/* <TouchableOpacity onPress={() => navigation.navigate('Contacts')}>
         <Image 
@@ -110,6 +118,7 @@ export const ContactList = () => {
       <Emptylistshower />
 
     </View>
+    </ScrollView>
   )
 }
 export default ContactList;
@@ -184,6 +193,7 @@ const styles = StyleSheet.create({
 
 
   },
+  
 
 
 

@@ -1,11 +1,11 @@
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-// const [Email, setEmail] = useState('')
-// const [Password, setPassword] = useState('')
-// const [info, setInfo] = useState([])
+
+
 
 const LogIn = () => {
+   
     const navigation=useNavigation<any>();
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -52,7 +52,9 @@ const LogIn = () => {
             </View>
             <View style={{}}>
                 <View>
-                    <TouchableOpacity style={styles.button1}>
+                    <TouchableOpacity style={styles.button1}
+                     onPress ={() => {
+                        navigation.navigate('Livingroom')}}>
                         <Text style={styles.buttonText1}>Log In</Text>
                     </TouchableOpacity>
                 </View>
@@ -68,10 +70,13 @@ const LogIn = () => {
                     </TouchableOpacity>
 
                     <View>
-                        <Text style={{ color: 'black', textAlign: 'center' }}>
+                        <Text style={{ color: 'black', textAlign: 'center',marginLeft:-30 }}>
                             Dont’t have an account?
-                            <Text style={{ color: 'blue' }}>Register</Text>
                         </Text>
+                        <TouchableOpacity style={{marginTop:-22,marginLeft:255}}  onPress ={() => {
+                               navigation.navigate('Signup')}}>
+                            <Text style={{ color: 'blue'}}>Register</Text>
+                            </TouchableOpacity>
                     </View>
 
                 </View>

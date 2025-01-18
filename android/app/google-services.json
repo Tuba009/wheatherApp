@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1028210366845",
+    "project_id": "fakestore-892fb",
+    "storage_bucket": "fakestore-892fb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028210366845:android:eac9dbf73fc7dd0b419414",
+        "android_client_info": {
+          "package_name": "com.awesomeproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDafeOTaHR2l2VEpxpcPKejzCxU5JtIud8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
